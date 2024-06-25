@@ -1,7 +1,7 @@
 interface ICustomer extends Document {
     name: string;
     cpf: string;
-    birthDate: Date;
+    birthDate: string;
     email: string;
     password: string;
     cep: string;

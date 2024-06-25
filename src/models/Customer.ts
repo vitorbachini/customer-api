@@ -4,7 +4,7 @@ import ICustomer from '../interfaces/iCustomer';
 const CustomerSchema = new Schema<ICustomer>({
     name: { type: 'string', required: true },
     cpf: { type: 'string', required: true, unique: true},
-    birthDate: { type: Date, required: true },
+    birthDate: { type: 'string', required: true },
     email: { type: 'string', required: true, unique: true},
     password: { type: 'string', required: true },
     cep: { type: 'string', required: true },
