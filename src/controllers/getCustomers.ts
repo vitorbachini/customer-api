@@ -1,16 +1,16 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import Customer from '../models/Customer';
 
-export const getAllCustomers = async (req: Request, res: Response) => {
+export const getAllCustomers = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const customers = await Customer.find();
         res.status(200).json(customers);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        next(error);
     }
 };
 
-export const getCustomerById = async (req: Request, res: Response) => {
+export const getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
         const customer = await Customer.findById(id);
@@ -21,6 +21,6 @@ export const getCustomerById = async (req: Request, res: Response) => {
         }
         res.status(200).json(customer);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        next(error);
     }
 };
