@@ -7,11 +7,16 @@ import {
 import { getAllCustomers, getCustomerById } from '../controllers/getCustomers';
 import { createCustomer } from '../controllers/createCustomer';
 import { deleteCustomer } from '../controllers/deleteCustomer';
+import { validateId } from '../middlewares/validateIdMiddleware';
 
 export const customerRouter = Router();
 
-customerRouter.route('/client').post(validateReq(createCustomerValid), createCustomer);
+customerRouter
+    .route('/client')
+    .post(validateReq(createCustomerValid), createCustomer);
 customerRouter.route('/client').get(getAllCustomers);
-customerRouter.route('/client/:id').get(getCustomerById);
-customerRouter.route('/client/:id').patch(validateReq(updateCustomerValid));
-customerRouter.route('/client/:id').delete(deleteCustomer);
+customerRouter.route('/client/:id').get(validateId, getCustomerById);
+customerRouter
+    .route('/client/:id')
+    .patch(validateId, validateReq(updateCustomerValid));
+customerRouter.route('/client/:id').delete(validateId, deleteCustomer);
