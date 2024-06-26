@@ -1,8 +1,8 @@
 interface ICep{
     uf: string;
-    localidade: string;
-    logradouro: string;
-    bairro: string;
+    city: string;
+    address: string;
+    neighborhood: string;
 } 
 
 export default ICep;

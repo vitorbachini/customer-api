@@ -13,9 +13,9 @@ export const getZipCode = async (cep: string): Promise<ICep> => {
 
         return{
             uf: response.data.uf,
-            localidade: response.data.localidade,
-            logradouro: response.data.logradouro,
-            bairro: response.data.bairro
+            city: response.data.localidade,
+            address: response.data.logradouro,
+            neighborhood: response.data.bairro
         }
 
     } catch (error) {
