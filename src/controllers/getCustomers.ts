@@ -3,7 +3,7 @@ import Customer from '../models/Customer';
 
 export const getAllCustomers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const customers = await Customer.find();
+        const customers = await Customer.find({}, '-password');
         res.status(200).json(customers);
     } catch (error) {
         next(error);
@@ -13,7 +13,7 @@ export const getAllCustomers = async (req: Request, res: Response, next: NextFun
 export const getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const customer = await Customer.findById(id);
+        const customer = await Customer.findById(id, '-password');
         if (!customer) {
             return res
                 .status(404)
