@@ -12,9 +12,10 @@ export const createCustomer = async (
     res: Response,
     next: NextFunction,
 ) => {
-    const { name, cpf, birthDate, email, password, cep, number, complement } =
-        req.body;
     try {
+        const { name, cpf, birthDate, email, password, cep, number, complement } =
+            req.body;
+            
         if (await checkCpf(cpf)) {
             return res.status(400).json({ message: 'Cpf already exists' });
         }

@@ -4,12 +4,13 @@ import {
     createCustomerValid,
     updateCustomerValid,
 } from '../validation/customer';
-import { getAllCustomers } from '../controllers/getCustomers';
+import { getAllCustomers, getCustomerById } from '../controllers/getCustomers';
+import { createCustomer } from '../controllers/createCustomer';
 
 export const customerRouter = Router();
 
-customerRouter.route('/client').post(validateReq(createCustomerValid));
+customerRouter.route('/client').post(validateReq(createCustomerValid), createCustomer);
 customerRouter.route('/client').get(getAllCustomers);
-customerRouter.route('/client/:id').get();
+customerRouter.route('/client/:id').get(getCustomerById);
 customerRouter.route('/client/:id').patch(validateReq(updateCustomerValid));
 customerRouter.route('/client/:id').delete();
