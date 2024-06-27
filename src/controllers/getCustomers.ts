@@ -7,9 +7,9 @@ export const getAllCustomers = async (
     next: NextFunction,
 ) => {
     try {
-        const { page = 1, limit = 5 } = req.params;
-        const pageNumber = parseInt(page as string, 5);
-        const limitNumber = parseInt(limit as string, 5);
+        const { page = 1, limit = 10 } = req.query;
+        const pageNumber = parseInt(page as string, 10);
+        const limitNumber = parseInt(limit as string, 10);
 
         const customers = await Customer.find({}, '-password')
             .skip((pageNumber - 1) * limitNumber)
