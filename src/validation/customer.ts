@@ -19,9 +19,9 @@ export const createCustomerValid = Joi.object({
 });
 
 export const updateCustomerValid = Joi.object({
-    name: Joi.string().regex(nameRegex).min(3),
-    birthDate: Joi.string().regex(dateRegex),
-    password: Joi.string().regex(passwordRegex).min(6),
-    cep: Joi.string().regex(cepRegex),
-    number: Joi.string().regex(numberRegex).min(1),
+    name: Joi.string().regex(nameRegex).min(3).optional(),
+    birthDate: Joi.string().regex(dateRegex).optional(),
+    password: Joi.string().regex(passwordRegex).min(6).optional(),
+    cep: Joi.string().regex(cepRegex).optional(),
+    number: Joi.string().regex(numberRegex).min(1).optional(),
 })

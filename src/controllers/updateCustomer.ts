@@ -11,35 +11,43 @@ export const updateCustomer = async (
     try {
         const { id } = req.params;
         const { name, birthDate, password, cep, number, complement } = req.body;
-        
-        delete req.body.cpf
-        delete req.body.email
+
+        delete req.body.cpf;
+        delete req.body.email;
 
         const updateData: any = {
             name,
             birthDate,
             number,
             complement,
+        };
+
+        if (password) {
+            updateData.password = await hashPassword(password);
         }
 
-        if(password){
-            updateData.password = await hashPassword(password)
+        if (cep) {
+            try {
+                const cepData = await getZipCode(cep);
+                updateData.cep = cep;
+                updateData.uf = cepData.uf;
+                updateData.city = cepData.city;
+                updateData.address = cepData.address;
+                updateData.neighborhood = cepData.neighborhood;
+            } catch (cepError) {
+                res.status(400).send({ cepError: cepError });
+            }
         }
-        try{
-            const cepData = await getZipCode(cep)
-            updateData.cep = cep
-            updateData.uf = cepData.uf
-            updateData.city = cepData.city
-            updateData.address = cepData.address
-            updateData.neighborhood = cepData.neighborhood
-        }catch (cepError) {
-            res.status(400).send({cepError: cepError});
-        }
-        const updatedCustomer = await Customer.findByIdAndUpdate(id, updateData, {
-            new: true,
-            runValidators: true,
-            select: '-password'
-        });
+
+        const updatedCustomer = await Customer.findByIdAndUpdate(
+            id,
+            updateData,
+            {
+                new: true,
+                runValidators: true,
+                select: '-password',
+            },
+        );
         if (!updatedCustomer) {
             return res
                 .status(404)
