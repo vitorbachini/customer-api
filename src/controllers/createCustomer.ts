@@ -57,7 +57,7 @@ export const createCustomer = async (
                 neighborhood: customer.neighborhood
             })
         } catch (cepError) {
-            res.status(400).send({cepError: cepError});
+            res.status(400).json({ message: 'Cep ERROR'  });
         }
     } catch (error) {
         next(error);

@@ -35,7 +35,7 @@ export const updateCustomer = async (
                 updateData.address = cepData.address;
                 updateData.neighborhood = cepData.neighborhood;
             } catch (cepError) {
-                res.status(400).send({ cepError: cepError });
+                res.status(400).json({ message: 'Cep ERROR'  });
             }
         }
 
