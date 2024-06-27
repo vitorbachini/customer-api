@@ -13,7 +13,7 @@ export const createCustomer = async (
     next: NextFunction,
 ) => {
     try {
-        const { name, cpf, birthDate, email, password, cep, number, complement } =
+        const { name, cpf, birthDate, email, password, cep, number} =
             req.body;
             
         if (await checkCpf(cpf)) {
@@ -38,7 +38,7 @@ export const createCustomer = async (
                 city: cepData.city,
                 address: cepData.address,
                 number,
-                complement,
+                complement: cepData.complement,
                 neighborhood: cepData.neighborhood
             });
 
@@ -52,7 +52,7 @@ export const createCustomer = async (
                 uf: customer.uf,
                 city: customer.city,
                 address: customer.address,
-                number: customer.name,
+                number: customer.number,
                 complement: customer.complement,
                 neighborhood: customer.neighborhood
             })
