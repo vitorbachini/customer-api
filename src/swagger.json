@@ -1,0 +1,345 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Customer API",
+        "description": "A simple API for customer management, using the external ViaCep API.",
+        "version": "1.0.0"
+    },
+    "servers":[
+        {
+            "url": "http://localhost:{port}/api/{version}",
+            "variables": {
+                "port": {
+                    "default": "3000"
+                },
+                "version": {
+                    "default": "v1",
+                    "enum": [
+                        "v1"
+                    ]
+                }
+            }
+        }
+    ],
+    "tags":[
+        {
+            "name": "Display",
+            "description": "Return and display all customer information"
+        },
+        {
+            "name": "Customer",
+            "description": "Manage customers and operations"
+        }
+    ],
+    "paths":{
+        "/client":{
+            "get":{
+                "summary": "Retrieves all customers.",
+                "tags":["Display"],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Desired page number",
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Desired number of items per page",
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Successful response.",
+                        "content": {
+                            "application/json":{
+                                "schema":{
+                                    "type": "array",
+                                    "items":{
+                                        "$ref": "#/components/schemas/Customer"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Inter server error"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create a new customer.",
+                "tags": ["Customer"],
+                "requestBody": {
+                    "description": "Customer payload data.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomerPayload"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CustomerPayload"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid input."
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/client/{id}": {
+            "get": {
+                "summary": "Retrieve a customer.",
+                "tags": ["Display"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Customer Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#components/schemas/Customer"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Invalid Id"
+                    },
+                    "404": {
+                        "description": "Customer not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Updates a customer.",
+                "tags": ["Customer"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Update a customer by Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Customer data to be updated.",
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CustomerUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful response.",
+                        "content": {
+                            "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Customer"
+                            }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid Id"
+                    },
+                    "404": {
+                        "description": "Customer not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletes a customer.",
+                "tags": ["Customer"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Delete a customer by Id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid Id"
+                    },
+                    "404": {
+                        "description": "Customer not found."
+                    },
+                    "500": {
+                        "description": "Internal server error."
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CustomerPayload":{
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Nome completo"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "example": "123.456.789-99"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "example": "01/01/2000"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "email@endereco.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "Senha123!"
+                    },
+                    "cep": {
+                        "type": "string",
+                        "example": "12345-060"
+                    },
+                    "number": {
+                        "type": "string",
+                        "example": "81"
+                    }
+                }
+            },
+            "Customer": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "667d72c9d072f4418f551457"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Nome completo"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "example": "123.456.789-99"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "example": "01/01/2000"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "email@endereco.com"
+                    },
+                    "cep": {
+                        "type": "string",
+                        "example": "12345-060"
+                    },
+                    "uf": {
+                        "type": "string",
+                        "example": "RS"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "Rio Grande"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Street 2"
+                    },
+                    "number": {
+                        "type": "string",
+                        "example": "81"
+                    },
+                    "complement": {
+                        "type": "string",
+                        "example": "close to the beach"
+                    },
+                    "neighborhood": {
+                        "type": "string",
+                        "example": "Center"
+                    }
+                }
+            },
+            "CustomerUpdate": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Nome completo"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "example": "01/01/2000"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "Senha123!"
+                    },
+                    "cep": {
+                        "type": "string",
+                        "example": "12345-060"
+                    },
+                    "number": {
+                        "type": "string",
+                        "example": "81"
+                    }
+            }
+        }
+    }
+}
+}
