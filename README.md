@@ -8,7 +8,6 @@ This is a simple REST API for managing customer information, built with Express,
 2. [Installation](#installation)
 3. [Running the Application](#running-the-application)
 4. [API Endpoints](#api-endpoints)
-5. [API Documentation](#api-documentation)
 
 ## Prerequisites
 
